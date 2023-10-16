@@ -5,7 +5,7 @@ pipeline {
             steps {
                 echo "Hello world"
                 sleep 10
-                echo "test"
+                echo "test1"
             }
         }
     }
