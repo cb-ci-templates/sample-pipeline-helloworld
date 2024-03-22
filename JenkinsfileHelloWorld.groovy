@@ -1,6 +1,7 @@
 node {
                 sh "curl -O https://raw.githubusercontent.com/pipeline-demo-caternberg/pipeline-helloworld/main/extended_choice_params.properties"
                 sh "pwd && ls -l"
+                sh "cat extended_choice_params.properties"
 }
 
 pipeline {
@@ -13,7 +14,7 @@ pipeline {
         stage('Main') {
             steps {
                 echo "Hello world"
-                echo "test1"
+                echo "${myparam}"
             }
         }
     }
