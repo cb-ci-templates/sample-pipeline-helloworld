@@ -1,3 +1,14 @@
+pipeline{
+    agent none
+    stages {
+        stage('Main') {
+            steps {
+                sh "ls -l"
+            }
+        }
+    }
+}
+
 pipeline {
     agent none
     parameters {
@@ -8,7 +19,6 @@ pipeline {
         stage('Main') {
             steps {
                 echo "Hello world"
-                sleep 10
                 echo "test1"
             }
         }
