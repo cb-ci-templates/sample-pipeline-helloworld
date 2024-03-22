@@ -1,6 +1,6 @@
 node {
                 sh "curl -O https://raw.githubusercontent.com/pipeline-demo-caternberg/pipeline-helloworld/main/extended_choice_params.properties"
-                sh "ls -l"
+                sh "pwd && ls -l"
 }
 
 pipeline {
