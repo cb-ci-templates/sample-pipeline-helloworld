@@ -1,7 +1,14 @@
 node {
-                sh "curl -O https://raw.githubusercontent.com/pipeline-demo-caternberg/pipeline-helloworld/main/extended_choice_params.properties"
-                sh "pwd && ls -l"
-                sh "cat extended_choice_params.properties"
+                sh """
+                    file="extended_choice_params.properties""
+                    if [ -e "$file" ]; then
+                        rm -f "$file"
+                        echo "File '$file' deleted."
+                    fi    
+                    curl -O https://raw.githubusercontent.com/pipeline-demo-caternberg/pipeline-helloworld/main/$file
+                    pwd && ls -l
+                    cat extended_choice_params.properties
+                """
 }
 
 pipeline {
