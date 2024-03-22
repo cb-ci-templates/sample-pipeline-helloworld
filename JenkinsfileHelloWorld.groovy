@@ -1,3 +1,4 @@
+/* REQUIRES MASTER EXECUTOR
 node {
                 sh """
                     file="extended_choice_params.properties"
@@ -10,11 +11,12 @@ node {
                     cat \$file
                 """
 }
+ */
 
 pipeline {
     agent none
     parameters {
-        extendedChoice multiSelectDelimiter: ',', name: 'myparam', propertyFile: '/var/jenkins_home/workspace/ParamHelloWorld/extended_choice_params.properties', propertyKey: 'mychoice_values', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', visibleItemCount: 5
+        extendedChoice multiSelectDelimiter: ',', name: 'myparam', propertyFile: './extended_choice_params.properties', propertyKey: 'mychoice_values', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', visibleItemCount: 5
     }
 
     stages {
