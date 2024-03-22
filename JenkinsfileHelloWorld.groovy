@@ -1,13 +1,6 @@
-pipeline{
-    agent none
-    stages {
-        stage('Main') {
-            steps {
+node {
                 sh "ls -l"
             }
-        }
-    }
-}
 
 pipeline {
     agent none
