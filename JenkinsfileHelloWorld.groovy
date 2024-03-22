@@ -1,13 +1,13 @@
 node {
                 sh """
-                    file="extended_choice_params.properties""
-                    if [ -e "$file" ]; then
-                        rm -f "$file"
-                        echo "File '$file' deleted."
+                    file="extended_choice_params.properties"
+                    if [ -e "\$file" ]; then
+                        rm -f "\$file"
+                        echo "File '\$file' deleted."
                     fi    
-                    curl -O https://raw.githubusercontent.com/pipeline-demo-caternberg/pipeline-helloworld/main/$file
+                    curl -O https://raw.githubusercontent.com/pipeline-demo-caternberg/pipeline-helloworld/main/\$file
                     pwd && ls -l
-                    cat extended_choice_params.properties
+                    cat \$file
                 """
 }
 
