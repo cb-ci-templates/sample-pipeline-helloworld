@@ -21,7 +21,7 @@ pipeline {
         stage('GetChangesByCurls') {
             environment {
                 JENKINS_TOKEN = credentials("jenkins-token")
-                BUILD_URL_STRIPPED=${BUILD_URL}.replaceAll("^https://", "")
+                BUILD_URL_STRIPPED = $ { BUILD_URL }.replaceAll("^https://", "")
             }
             steps {
                 echo "Hello world"
@@ -31,15 +31,12 @@ pipeline {
             }
         }
         stage('GetChangesByGroovy') {
-            environment {
-                JENKINS_TOKEN = credentials("jenkins-token")
-            }
             steps {
                 //see https://devops.stackexchange.com/questions/2310/get-all-change-logs-of-since-last-successful-build-in-jenkins-pipeline
-                  script {
-                      def changeLogSets = currentBuild.changeSets
-                      println changeLogSets
-                  }
+                script {
+                    def changeLogSets = currentBuild.changeSets
+                    println changeLogSets
+                }
             }
         }
     }
