@@ -25,7 +25,7 @@ pipeline {
             steps {
                 echo "Hello world"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
-                sh 'cat changelog.xml |sed -e "s/<\\/msg>//g; s/<msg>/\\\\`echo -e \'\\r\'`/g; s/<\\/*changes>//g" '
+                sh "cat changelog.xml |sed -n '/<changeSet/,/<\\/changeSet>/p'"
                 sh "env|sort"
             }
         }
