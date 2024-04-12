@@ -34,7 +34,7 @@ pipeline {
                 //see https://devops.stackexchange.com/questions/2310/get-all-change-logs-of-since-last-successful-build-in-jenkins-pipeline
                 script {
                     def changeLogSets = currentBuild.changeSets
-                    changeLogSets.each{it ->
+                    changeLogSets.each{ ->
                         println it
                     }
                 }
