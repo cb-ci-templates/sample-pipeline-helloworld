@@ -26,17 +26,33 @@ pipeline {
                 echo "Hello world"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 sh "cat changelog.xml"
-                sh "cat changelog.xml |sed -n '#<changeSet#,#</changeSet>#p'"
+                sh "sed -n '#<changeSet#,#</changeSet>#p' changelog.xml"
                 sh "env|sort"
             }
         }
         stage('GetChangesByGroovy') {
             steps {
                 //see https://devops.stackexchange.com/questions/2310/get-all-change-logs-of-since-last-successful-build-in-jenkins-pipeline
+                //Should be moved to shared Library
                 script {
                     def changeLogSets = currentBuild.changeSets
-                    changeLogSets.each{ ->
-                        println it
+                    // Check if changeSets is not null and contains any entries
+                    if (changeSets) {
+                        // Iterate through each change set
+                        changeSets.each { changeSet ->
+                            // Accessing change set details
+                            def commitMessages = changeSet.msg
+                            def affectedFiles = changeSet.items.collect { it.path }
+
+                            // Outputting change set details
+                            println "Commit Messages:"
+                            commitMessages.each { println "- $it" }
+
+                            println "Affected Files:"
+                            affectedFiles.each { println "- $it" }
+                        }
+                    } else {
+                        println "No change sets found for this build."
                     }
                 }
             }
