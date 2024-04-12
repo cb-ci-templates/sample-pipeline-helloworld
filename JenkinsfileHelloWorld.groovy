@@ -1,3 +1,4 @@
+def changelogs=""
 pipeline {
     agent {
         kubernetes {
@@ -25,7 +26,7 @@ pipeline {
                 sh "git config --global --add safe.directory ${WORKSPACE}"
                 //Move better to shared Library
                 script{
-                    def changelogs=sh returnStdout: true, script: "git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT}"
+                    changelogs=sh returnStdout: true, script: "git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT}"
                 }
                 echo"${changelogs}"
             }
