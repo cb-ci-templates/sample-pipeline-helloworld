@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Main') {
             environment {
-                JENKINS_TOKEN = credential ("jenkins-token")
+                JENKINS_TOKEN = credentials("jenkins-token")
             }
             steps {
                 echo "Hello world"
