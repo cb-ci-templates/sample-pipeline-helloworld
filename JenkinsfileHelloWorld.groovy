@@ -69,7 +69,10 @@ pipeline {
             steps {
                 echo "#######################################################"
                 echo "print commit messages"
-                sh "git log -1"
+                sh """
+                    git config --global --add safe.directory /home/jenkins/agent/workspace/ci-templates-demo/testChangeLog
+                    git log -1
+                """
             }
         }
     }
