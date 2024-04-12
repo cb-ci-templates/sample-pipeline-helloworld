@@ -32,9 +32,8 @@ pipeline {
                 echo "#####FILTERED#####\n"
                 //better to use xq , however, here with sed
                 //sh "sed -n '/<changeSet/,/<\/changeSet>/p' changelog.xml"
-                sh """
-                    cat changelog.xml |sed -e \"s/<\\/*comment>//g\" | sed '/^\$/d;G'
-                """
+                sh 'cat changelog.xml |sed -e "s/<\\/*comment>//g" add|sed "/^\$/d;G"'
+
             }
         }
         stage('GetChangesByGroovy') {
