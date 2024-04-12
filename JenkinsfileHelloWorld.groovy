@@ -23,20 +23,23 @@ pipeline {
                 JENKINS_TOKEN = credentials("jenkins-token")
             }
             steps {
-                //see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins
-                echo "Hello world"
+                echo "#######################################################"
+                echo "print commit messages"
+                echo "see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
+                echo "#####NOT FILTERED#####\n"
                 sh "cat changelog.xml"
                 echo "#####FILTERED#####\n"
                 //better to use xq , however, here with sed
                 //sh "sed -n '/<changeSet/,/<\/changeSet>/p' changelog.xml"
-                sh "sed -e \"s/<\\/*comment>//g\" | sed '/^\$/d;G' changelog.xml"
-                sh "env|sort"
+                sh "cat changelog.xml |sed -e \"s/<\\/*comment>//g\" | sed '/^\$/d;G'"
             }
         }
         stage('GetChangesByGroovy') {
             steps {
-                //see https://devops.stackexchange.com/questions/2310/get-all-change-logs-of-since-last-successful-build-in-jenkins-pipeline
+                echo "#######################################################"
+                echo "print commit messages"
+                echo "see https://devops.stackexchange.com/questions/2310/get-all-change-logs-of-since-last-successful-build-in-jenkins-pipeline"
                 //Should be moved to shared Library
                 script {
                     def changeLogSets = currentBuild.changeSets
