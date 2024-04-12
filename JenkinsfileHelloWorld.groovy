@@ -26,7 +26,7 @@ pipeline {
                     git config --global --add safe.directory ${WORKSPACE}
                     env.CHANGE_LOGS=\$(git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT})
                 """
-                echo ${env.CHANGE_LOGS}
+                echo"${env.CHANGE_LOGS}"
             }
         }
         stage('GetChangesByCurls') {
