@@ -7,7 +7,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: ubuntu
+                    image: caternberg/ci-utils
                     command:
                     - sleep
                     args:
