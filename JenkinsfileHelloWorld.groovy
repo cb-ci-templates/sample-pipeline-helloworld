@@ -74,7 +74,7 @@ pipeline {
                         }
                         println log
                     } else {
-                        println "No change sets found for this build."
+                        println "No changeSet found for this build."
                     }
                 }
             }
