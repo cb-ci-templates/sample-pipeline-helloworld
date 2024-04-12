@@ -72,7 +72,7 @@ pipeline {
                 echo "print commit messages"
                 sh """
                     git config --global --add safe.directory /home/jenkins/agent/workspace/ci-templates-demo/testChangeLog
-                    git log -1
+                    git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT}
                 """
             }
         }
