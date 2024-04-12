@@ -23,7 +23,7 @@ pipeline {
                 echo "#######################################################"
                 echo "print commit messages"
                 sh """
-                    git config --global --add safe.directory /home/jenkins/agent/workspace/ci-templates-demo/testChangeLog
+                    git config --global --add safe.directory ${WORKSPACE}
                     env.CHANGE_LOGS=\$(git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT})
                 """
                 echo ${env.CHANGE_LOGS}
