@@ -18,6 +18,17 @@ pipeline {
     }
 
     stages {
+        stage('GetChangesByGitLog') {
+            steps {
+                echo "#######################################################"
+                echo "print commit messages"
+                sh """
+                    git config --global --add safe.directory /home/jenkins/agent/workspace/ci-templates-demo/testChangeLog
+                    env.CHANGE_LOGS=\$(git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT})
+                """
+                echo ${env.CHANGE_LOGS}
+            }
+        }
         stage('GetChangesByCurls') {
             environment {
                 JENKINS_TOKEN = credentials("jenkins-token")
@@ -66,16 +77,7 @@ pipeline {
                 }
             }
         }
-        stage('GetChangesByGitLog') {
-            steps {
-                echo "#######################################################"
-                echo "print commit messages"
-                sh """
-                    git config --global --add safe.directory /home/jenkins/agent/workspace/ci-templates-demo/testChangeLog
-                    git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT}
-                """
-            }
-        }
+
     }
 
 }
