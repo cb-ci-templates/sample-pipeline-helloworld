@@ -40,7 +40,7 @@ pipeline {
                     // Check if changeSets is not null and contains any entries
                     if (changeLogSets) {
                         // Iterate through each change set
-                        changeSets.each { changeSet ->
+                        changeLogSets.each { changeSet ->
                             // Accessing change set details
                             def commitMessages = changeSet.msg
                             def affectedFiles = changeSet.items.collect { it.path }
