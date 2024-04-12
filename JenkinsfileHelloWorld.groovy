@@ -23,6 +23,7 @@ pipeline {
                 JENKINS_TOKEN = credentials("jenkins-token")
             }
             steps {
+                sh "env/sortenv sort "
                 echo "#######################################################"
                 echo "print commit messages"
                 echo "see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins"
