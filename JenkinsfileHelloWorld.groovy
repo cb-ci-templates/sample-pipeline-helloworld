@@ -18,15 +18,28 @@ pipeline {
     }
 
     stages {
-        stage('Main') {
+        stage('GetChangesByCurls') {
+            environment {
+                JENKINS_TOKEN = credentials("jenkins-token")
+                BUILD_URL_STRIPPED="${BUILD_URL#https://}"
+            }
+            steps {
+                echo "Hello world"
+                sh "curl -L -o changelog.xml https://${JENKINS_TOKEN}@$BUILD_URL_STRIPPED}/api/xml?wrapper=changes&xpath=//changeSet//comment"
+                sh "cat changelog.xml"
+                sh "env|sort"
+            }
+        }
+        stage('GetChangesByGroovy') {
             environment {
                 JENKINS_TOKEN = credentials("jenkins-token")
             }
             steps {
-                echo "Hello world"
-                sh "curl -L -o changelog.xml https://${JENKINS_TOKEN}@sda.acaternberg.flow-training.beescloud.com/sb/job/ci-templates-demo/job/testChangeLog/6/api/xml?wrapper=changes&xpath=//changeSet//comment"
-                sh "cat changelog.xml"
-                sh "env|sort"
+                //see https://devops.stackexchange.com/questions/2310/get-all-change-logs-of-since-last-successful-build-in-jenkins-pipeline
+                  script {
+                      def changeLogSets = currentBuild.changeSets
+                      println changeLogSets
+                  }
             }
         }
     }
