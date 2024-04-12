@@ -29,9 +29,14 @@ pipeline {
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 echo "#####NOT FILTERED#####\n"
                 sh "cat changelog.xml"
-                //Here are some options to grep the subcontent
-                //sh 'xmllint --xpath "//changeSet" changelog.xml'
-                //sh "xmllint --xpath "//changeSet/item/comment" changelog.xml"
+                /*
+                    Here are some options to grep the sub-content like comments
+                    xmllint might require xmllint tool installation on agent
+                    Other options are: sed or xq
+                    sh 'xmllint --xpath "//changeSet" changelog.xml'
+                    sh "xmllint --xpath "//changeSet/item/comment" changelog.xml"
+                */
+
             }
         }
         stage('GetChangesByGroovy') {
