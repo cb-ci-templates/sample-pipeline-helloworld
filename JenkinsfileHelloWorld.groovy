@@ -26,6 +26,7 @@ pipeline {
                 echo "Hello world"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 sh "cat changelog.xml"
+                echo "#####FILTERED#####\n"
                 //better to use xq , however, here with sed
                 sh "sed -n '/<changeSet/,/<\\/changeSet>/p' changelog.xml"
                 sh "env|sort"
@@ -41,16 +42,16 @@ pipeline {
                     if (changeLogSets) {
                         // Iterate through each change set
                         changeLogSets.each { changeSet ->
-                            // Accessing change set details
-                            def commitMessages = changeSet.msg
-                            def affectedFiles = changeSet.items.collect { it.path }
+                            // Accessing the list of commits for each change set
+                            def commits = changeSet.items.collect { it.commit }
 
-                            // Outputting change set details
-                            println "Commit Messages:"
-                            commitMessages.each { println "- $it" }
+                            // Iterating through each commit and accessing its message
+                            commits.each { commit ->
+                                // Accessing commit message
+                                def commitMessage = commit.msg
 
-                            println "Affected Files:"
-                            affectedFiles.each { println "- $it" }
+                                println "Commit Message: $commitMessage"
+                            }
                         }
                     } else {
                         println "No change sets found for this build."
