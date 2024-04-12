@@ -21,11 +21,10 @@ pipeline {
         stage('GetChangesByCurls') {
             environment {
                 JENKINS_TOKEN = credentials("jenkins-token")
-                BUILD_URL_STRIPPED = "${BUILD_URL}.replaceAll('^https://','')"
             }
             steps {
                 echo "Hello world"
-                sh "curl -L -o changelog.xml https://${JENKINS_TOKEN}@$BUILD_URL_STRIPPED}/api/xml?wrapper=changes&xpath=//changeSet//comment"
+                sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 sh "cat changelog.xml"
                 sh "env|sort"
             }
