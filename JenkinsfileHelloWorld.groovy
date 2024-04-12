@@ -21,7 +21,7 @@ pipeline {
         stage('GetChangesByCurls') {
             environment {
                 JENKINS_TOKEN = credentials("jenkins-token")
-                BUILD_URL_STRIPPED = "${BUILD_URL}.replaceAll("^https://", "")"
+                BUILD_URL_STRIPPED = "${BUILD_URL}.replaceAll('^https://','')"
             }
             steps {
                 echo "Hello world"
