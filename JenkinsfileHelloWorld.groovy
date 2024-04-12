@@ -65,5 +65,13 @@ pipeline {
                 }
             }
         }
+        stage('GetChangesByGitLog') {
+            steps {
+                echo "#######################################################"
+                echo "print commit messages"
+                sh "git log -1"
+            }
+        }
     }
+
 }
