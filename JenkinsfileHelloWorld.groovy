@@ -22,11 +22,12 @@ pipeline {
             steps {
                 echo "#######################################################"
                 echo "print commit messages"
-                sh """
-                    git config --global --add safe.directory ${WORKSPACE}
-                    env.CHANGE_LOGS=\$(git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT})
-                """
-                echo"${env.CHANGE_LOGS}"
+                sh "git config --global --add safe.directory ${WORKSPACE}"
+                //Move better to shared Library
+                script{
+                    def changelogs=sh returnStdout: true, script: "env.CHANGE_LOGS=git log  ${GIT_PREVIOUS_COMMIT}..${GIT_COMMIT})"
+                }
+                echo"${changelogs}"
             }
         }
         stage('GetChangesByCurls') {
