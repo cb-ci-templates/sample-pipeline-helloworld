@@ -26,6 +26,7 @@ pipeline {
                 echo "Hello world"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 sh "cat changelog.xml"
+                //better to use xq , however, here with sed
                 sh "sed -n '#<changeSet#,#</changeSet>#p' changelog.xml"
                 sh "env|sort"
             }
@@ -37,7 +38,7 @@ pipeline {
                 script {
                     def changeLogSets = currentBuild.changeSets
                     // Check if changeSets is not null and contains any entries
-                    if (changeSets) {
+                    if (changeLogSets) {
                         // Iterate through each change set
                         changeSets.each { changeSet ->
                             // Accessing change set details
