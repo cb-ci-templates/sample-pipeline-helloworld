@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: caternberg/ci-utils:1.0
+                    image: caternberg/ci-utils:1.2
                     command:
                     - sleep
                     args:
@@ -71,10 +71,10 @@ pipeline {
                     xmllint might require xmllint tool installation on agent
                     Other options are: sed or xq
                 */
-                    container ("xmllint"){
+                   // container ("xmllint"){
                         sh 'xmllint --xpath "//changeSet" changelog.xml'
-                        sh "xmllint --xpath "//changeSet/item/comment" changelog.xml"
-                    }
+                        sh 'xmllint --xpath "//changeSet/item/comment" changelog.xml'
+                   // }
                 }
         }
         stage('GetChangesByGroovy') {
