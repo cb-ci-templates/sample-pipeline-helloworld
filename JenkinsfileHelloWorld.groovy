@@ -41,14 +41,25 @@ pipeline {
                 echo "print commit messages"
                 echo "see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
+                //sh "cat changelog.xml"
+                //This requires script approval!!
                 script {
-                   def workflowRun = new XmlParser().parse("changelog.xml")
-                   println workflowRun.workflowRun.changeSet.text()
+                    def workflowRun = new XmlParser().parse("changelog.xml")
+                    def xml = new XmlSlurper().parseText(myXml)
+                    def items = xml.changeSet.item.collect { item ->
+                        //println item
+                        def comment = item.comment.text()
+                        def author = item.author.fullName.text()
+                        def email = item.authorEmail.text()
+                        [name: author, comment: comment, email: email]
+                    }
+
+                    items.each { println it }
                 }
-                sh "cat changelog.xml"
 
 
-                /*
+
+                /* So better to use shell tools, which doesn`t require approvals
                     Here are some options to grep the sub-content like comments
                     xmllint might require xmllint tool installation on agent
                     Other options are: sed or xq
