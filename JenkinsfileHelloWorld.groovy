@@ -13,6 +13,12 @@ pipeline {
                     - sleep
                     args:
                     - infinity
+                  - name: xmllint
+                    image: pipelinecomponents/xmllint 
+                    command:
+                    - sleep
+                    args:
+                    - infinity
                 '''
             defaultContainer 'shell'
         }
@@ -65,8 +71,10 @@ pipeline {
                     xmllint might require xmllint tool installation on agent
                     Other options are: sed or xq
                 */
-                    sh 'xmllint --xpath "//changeSet" changelog.xml'
-                    sh "xmllint --xpath "//changeSet/item/comment" changelog.xml"
+                    container ("xmllint"){
+                        sh 'xmllint --xpath "//changeSet" changelog.xml'
+                        sh "xmllint --xpath "//changeSet/item/comment" changelog.xml"
+                    }
                 }
         }
         stage('GetChangesByGroovy') {
