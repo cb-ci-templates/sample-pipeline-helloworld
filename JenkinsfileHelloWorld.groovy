@@ -42,6 +42,7 @@ pipeline {
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 sh "cat changelog.xml"
                 //This requires script approval!! It also requires Groovy what we want to avoid
+                //If you use it, move the script code to shared Library
                 script {
                     def myXml = sh returnStdout: true, script: "cat changelog.xml"
                     def workflowRun = new XmlParser().parseText(myXml)
