@@ -42,7 +42,13 @@ pipeline {
                 echo "see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
                 echo "#####NOT FILTERED#####\n"
+                script {
+                   def workflowRun = new XmlParser().parse("changelog.xml")
+                   println workflowRun.workflowRun.changeSet.text()
+                }
                 sh "cat changelog.xml"
+
+
                 /*
                     Here are some options to grep the sub-content like comments
                     xmllint might require xmllint tool installation on agent
