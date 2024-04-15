@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: caternberg/ci-utils:1.2
+                    image: caternberg/ci-utils:1.0
                     command:
                     - sleep
                     args:
@@ -46,7 +46,7 @@ pipeline {
                 echo "print commit messages"
                 echo "see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
-                sh "cat changelog.xml"
+                //sh "cat changelog.xml"
                 //This requires script approval!! It also requires Groovy what we want to avoid
                 //If you use it,move the script code to Shared Library
                /* script {
@@ -60,7 +60,6 @@ pipeline {
                         def email = item.authorEmail.text()
                         [name: author, comment: comment, email: email]
                     }
-
                     items.each { println it }
                 }*/
 
@@ -71,10 +70,10 @@ pipeline {
                     xmllint might require xmllint tool installation on agent
                     Other options are: sed or xq
                 */
-                   // container ("xmllint"){
+                   container ("xmllint"){
                         sh 'xmllint --xpath "//changeSet" changelog.xml'
                         sh 'xmllint --xpath "//changeSet/item/comment" changelog.xml'
-                   // }
+                   }
                 }
         }
         stage('GetChangesByGroovy') {
