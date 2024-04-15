@@ -8,7 +8,7 @@ pipeline {
                 spec:
                   containers:
                   - name: shell
-                    image: caternberg/ci-utils:1.0
+                    image: caternberg/ci-utils:1.1
                     command:
                     - sleep
                     args:
@@ -43,7 +43,7 @@ pipeline {
                 sh "cat changelog.xml"
                 //This requires script approval!! It also requires Groovy what we want to avoid
                 //If you use it,move the script code to Shared Library
-                script {
+               /* script {
                     def myXml = sh returnStdout: true, script: "cat changelog.xml"
                     def workflowRun = new XmlParser().parseText(myXml)
                     def xml = new XmlSlurper().parseText(myXml)
@@ -56,7 +56,7 @@ pipeline {
                     }
 
                     items.each { println it }
-                }
+                }*/
 
 
 
@@ -64,11 +64,10 @@ pipeline {
                     Here are some options to grep the sub-content like comments
                     xmllint might require xmllint tool installation on agent
                     Other options are: sed or xq
+                */
                     sh 'xmllint --xpath "//changeSet" changelog.xml'
                     sh "xmllint --xpath "//changeSet/item/comment" changelog.xml"
-                */
-
-            }
+                }
         }
         stage('GetChangesByGroovy') {
             steps {
