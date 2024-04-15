@@ -36,15 +36,15 @@ pipeline {
                 JENKINS_TOKEN = credentials("jenkins-token")
             }
             steps {
-                sh "env |sort "
                 echo "#######################################################"
                 echo "print commit messages"
                 echo "see https://stackoverflow.com/questions/11823826/get-access-to-build-changelog-in-jenkins"
                 sh "curl -L -u ${JENKINS_TOKEN} -o changelog.xml ${BUILD_URL}/api/xml?wrapper=changes&xpath=//changeSet//comment"
-                //sh "cat changelog.xml"
+                sh "cat changelog.xml"
                 //This requires script approval!!
                 script {
-                    def workflowRun = new XmlParser().parse("changelog.xml")
+                    def myXml = sh returnStdout: true, script: "cat changelog.xml"
+                    def workflowRun = new XmlParser().parseText(myXml)
                     def xml = new XmlSlurper().parseText(myXml)
                     def items = xml.changeSet.item.collect { item ->
                         //println item
