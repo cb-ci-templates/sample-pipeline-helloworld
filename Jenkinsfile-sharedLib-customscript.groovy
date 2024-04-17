@@ -24,7 +24,7 @@ pipeline {
         stage('customStep') {
             steps {
                 echo "#######################################################"
-                echo "print commit messages"
+                newSemanticVersion "[-M,1.2.3]"
 
             }
         }
