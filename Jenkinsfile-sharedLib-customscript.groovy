@@ -27,7 +27,7 @@ pipeline {
                 script {
                     newSemanticVersionScript = libraryResource 'scripts/newSemanticVersion.sh'
                 }
-                sh "echo ${newSemanticVersionScript} > test.sh && cat test.sh"
+                sh "cat ${newSemanticVersionScript} > test.sh && cat test.sh"
                 echo "#######################################################"
                 newSemanticVersion (arg:"-M",version:"1.2.3")
                 echo "${env.NEW_SEMANTIC_VERSION}"
