@@ -29,7 +29,7 @@ pipeline {
                     env.SCRIPT=newSemanticVersionScript
                 }
                 sh """
-                    cat <<EOF>test.sh   
+                    cat << EOF >> test.sh   
                     ${env.SCRIPT}
                     EOF 
                     cat test.sh
