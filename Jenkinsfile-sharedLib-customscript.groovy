@@ -25,7 +25,7 @@ pipeline {
             steps {
                 echo "#######################################################"
                 newSemanticVersion (arg:"-M",version:"1.2.3")
-
+                echo ${env.NEW_SEMANTIC_VERSION}
             }
         }
     }
