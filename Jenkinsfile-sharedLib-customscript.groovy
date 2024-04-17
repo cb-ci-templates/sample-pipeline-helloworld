@@ -30,7 +30,7 @@ pipeline {
                 }
                 sh """
                     cat << EOF >> test.sh   
-                    ${env.SCRIPT}
+                    "${env.SCRIPT}"
                     EOF 
                     cat test.sh
                  """
