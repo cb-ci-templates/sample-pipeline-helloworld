@@ -24,7 +24,7 @@ pipeline {
         stage('customStep') {
             steps {
                 echo "#######################################################"
-                newSemanticVersion "[-M,1.2.3]"
+                newSemanticVersion (arg:"-M",version:"1.2.3")
 
             }
         }
