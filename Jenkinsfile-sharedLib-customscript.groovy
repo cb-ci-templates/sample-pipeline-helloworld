@@ -24,16 +24,6 @@ pipeline {
     stages {
         stage('customStep') {
             steps {
-                script {
-                    def newSemanticVersionScript = libraryResource 'scripts/newSemanticVersion.sh'
-                    env.SCRIPT=newSemanticVersionScript
-                }
-                sh """
-                    cat << EOF >> test.sh   
-                    "${env.SCRIPT}"
-                    EOF 
-                    cat test.sh
-                 """
                 echo "#######################################################"
                 newSemanticVersion (arg:"-M",version:"1.2.3")
                 echo "${env.NEW_SEMANTIC_VERSION}"
