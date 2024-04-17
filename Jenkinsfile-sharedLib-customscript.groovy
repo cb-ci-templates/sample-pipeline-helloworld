@@ -1,7 +1,7 @@
 library identifier: 'ci-shared-library@main', retriever: modernSCM(
         [$class: 'GitSCMSource',
          remote: 'https://github.com/cb-ci-templates/ci-shared-library.git'])
-def newSemanticVersionScript=""
+
 pipeline {
     agent {
         kubernetes {
@@ -25,11 +25,12 @@ pipeline {
         stage('customStep') {
             steps {
                 script {
-                    newSemanticVersionScript = libraryResource 'scripts/newSemanticVersion.sh'
+                    def newSemanticVersionScript = libraryResource 'scripts/newSemanticVersion.sh'
+                    env.SCRIPT=newSemanticVersionScript
                 }
                 sh """
                     cat <<EOF>test.sh   
-                    ${newSemanticVersionScript}
+                    ${env.SCRIPT}
                     EOF 
                     cat test.sh
                  """
