@@ -1,80 +1,91 @@
-// Uses Declarative syntax to run commands inside a container.
+//https://devops.stackexchange.com/questions/885/cleanest-way-to-prematurely-exit-a-jenkins-pipeline-job-as-a-success
+//https://stackoverflow.com/questions/36852310/show-a-jenkins-pipeline-stage-as-failed-without-failing-the-whole-job
+def globalReturnCode = "0"
+def mockStepFail(exitCode){
+    echo "mockStepFail"
+    this.globalReturnCode=exitCode
+    echo "MOCKRETURNCODE: ${this.globalReturnCode}"
+}
 pipeline {
     agent {
         kubernetes {
             yaml '''
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: shell
-    image: ubuntu
-    command:
-    - sleep
-    args:
-    - infinity
-'''
+            apiVersion: v1
+            kind: Pod
+            spec:
+              containers:
+              - name: shell
+                image: ubuntu
+                command:
+                - sleep
+                args:
+                - infinity
+            '''
             defaultContainer 'shell'
         }
     }
     stages {
         stage('1') {
             steps {
-                sh 'hostname'
-                sh "exit 0"
-            }
-            post{
-                failure{
-                    echo "stage 1 failed"
+                catchError(catchInterruptions: false,message: 'Pipeline Stage 1 failed with returnCode ${globalReturnCode}', buildResult:'FAILURE', stageResult: 'FAILURE') {
+                    mockStepFail("0")
+                    sh "exit ${this.globalReturnCode}"
                 }
             }
         }
         stage('2') {
-            /*
-            We know the quality gates so we can use static parallel structure
-             */
+            when { equals expected: "0", actual: this.globalReturnCode }
             parallel {
                 stage("2a") {
+                    when { equals expected: "0", actual: this.globalReturnCode }
                     steps {
-                        //catchError(message: 'Pipeline Stage 2a failed', buildResult:'FAILURE', stageResult: 'FAILURE') {
+                        //Set pipeline Stage to "yellow"
+                        //warnError(catchInterruptions: true, message: 'warnError with returnCode ${globalReturnCode}') {
+                        //Set pipeline Stage to "red"
+                        catchError(message: 'Pipeline Stage 2a failed with returnCode ${globalReturnCode}', buildResult:'FAILURE', stageResult: 'FAILURE') {
                             sh "echo  2a"
-                            sh "exit 1"
-                        //}
-                    }
-                    post{
-                        failure{
-                            echo "stage 1a failed"
+                            sh "echo GLOBAL_RETURN_CODE: ${this.globalReturnCode}"
+                            mockStepFail("1")
+                            sh "exit ${this.globalReturnCode}"
                         }
                     }
+                    /* post{
+                         failure{
+                             echo "stage 2a failed with exitCode ${globalReturnCode}"
+                             //error "stage 2a failed with exitCode ${globalReturnCode}"
+                             sh "exit ${globalReturnCode}"
+                         }
+                         unstable {
+                             echo "stage 2a unstable with exitCode ${globalReturnCode}"
+                             //unstable 'unstable'
+                             sh "exit ${globalReturnCode}"
+                         }
+                     }
+                     */
+
                 }
                 stage("2b") {
+                    when { equals expected: "0", actual: this.globalReturnCode }
                     steps {
-                        sh "echo 1b"
+                        sh "echo 2b"
                     }
-                      post{
-                        failure{
-                            echo "stage 2a failed"
-                        }
-                    }
-                }
-            }
-            post {
-                failure{
-                    echo "fail stage 2"
                 }
             }
         }
         stage('3') {
+            when { equals expected: "0", actual: this.globalReturnCode }
             steps {
+                sh "echo ${this.globalReturnCode}"
                 sh 'hostname'
             }
         }
-
     }
     post {
         failure {
-            echo "failure main"
-            //sh "exit 1"
+            echo "failure with returnCode ${this.globalReturnCode}"
+        }
+        success {
+            echo "success with returnCode ${this.globalReturnCode}"
         }
     }
 }
