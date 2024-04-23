@@ -45,9 +45,8 @@ pipeline {
                         //Set pipeline Stage to "yellow"
                         //warnError(catchInterruptions: true, message: 'warnError with returnCode ${env.globalReturnCode}') {
                         //Set pipeline Stage to "red"
-                        catchError(message: "Pipeline Stage 2a failed with returnCode ${env.globalReturnCode}", buildResult:'FAILURE', stageResult: 'FAILURE') {
+                        catchError(message: "Pipeline Stage 2a failed", buildResult:'FAILURE', stageResult: 'FAILURE') {
                             sh "echo  2a"
-                            sh "echo GLOBAL_RETURN_CODE: ${globalReturnCode}"
                             mockStepFail(1)
                         }
                     }
