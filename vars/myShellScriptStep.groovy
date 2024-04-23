@@ -12,13 +12,10 @@ def call(Map params){
         if ( returnCode != "0" ){
             echo "EXIT 1"
             sh "exit 1"
+        }else {
+            env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat \${WORKSPACE}/mytest.json"
+            sh "echo ${env.MYJSON}"
         }
-    }
-    env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat \${WORKSPACE}/mytest.json"
-    sh "echo ${env.MYJSON}"
-    if ( returnCode != "0" ){
-        echo "EXIT 2"
-        sh "exit 1"
     }
 }
 /*
