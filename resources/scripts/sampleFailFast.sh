@@ -6,5 +6,5 @@ set -x # Enables a mode of the shell where all executed commands are printed to 
 RESULT_JSON=mytest.json
 #echo \$NonExistingVarCauseError
 greetings="World"
-echo "{"hello": "\$greetings"}" > \${WORKSPACE}/\${RESULT_JSON}
+echo "{"hello": "$greetings"}" > ${WORKSPACE}/${RESULT_JSON}
 exit 0

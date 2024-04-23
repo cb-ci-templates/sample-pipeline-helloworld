@@ -5,11 +5,11 @@ def call(Map params){
         //We should better externalize the script. For demo purpose we make the script here inline:
         env.globalReturnCode=sh label: 'exitStatus',
                 returnStatus: true,
-                script: """chmod a+x ${WORKSPACE}/sampleFailFast.sh && \
-                            ${WORKSPACE}/sampleFailFast.sh
+                script: """chmod a+x \${WORKSPACE}/sampleFailFast.sh && \
+                            \${WORKSPACE}/sampleFailFast.sh
                          """
         exitOrContinue ()
-        env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat ${WORKSPACE}/mytest.json"
+        env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat \${WORKSPACE}/mytest.json"
 
     }
     sh "echo ${env.MYJSON}"
