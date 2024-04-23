@@ -6,7 +6,7 @@ def call(Map params){
         returnCode=sh label: 'exitStatus',
                 returnStatus: true,
                 script: """chmod a+x \${WORKSPACE}/sampleFailFast.sh && \
-                            \${WORKSPACE}/sampleFailFast.sh
+                            \${WORKSPACE}/sampleFailFast.sh ${params.values}
                          """
         env.globalReturnCode="${returnCode}"
         echo "RETURNCODE: ${returnCode} "
@@ -19,14 +19,6 @@ def call(Map params){
         }
     }
 }
-/*
-def exitOrContinue(returnCode ){
-    echo "call exitOrContinue  returnCode:${this.returnCode}"
-    if ( this.returnCode != "0" ){
-        sh "exit ${this.returnCode}"
-    }
-}
-*/
 
 
 
