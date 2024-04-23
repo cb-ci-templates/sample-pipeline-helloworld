@@ -9,11 +9,15 @@ def call(Map params){
                             \${WORKSPACE}/sampleFailFast.sh
                          """
         env.globalReturnCode="${returnCode}"
-        this.exitOrContinue returnCode
+        if ( this.returnCode != "0" ){
+            sh "exit ${this.returnCode}"
+        }
         env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat \${WORKSPACE}/mytest.json"
     }
     sh "echo ${env.MYJSON}"
-    this.exitOrContinue returnCode
+    if ( this.returnCode != "0" ){
+        sh "exit ${this.returnCode}"
+    }
 }
 
 def exitOrContinue(returnCode ){
