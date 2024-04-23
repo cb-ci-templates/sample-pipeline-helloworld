@@ -6,7 +6,7 @@ def call(Map params){
         returnCode=sh label: 'exitStatus',
                 returnStatus: true,
                 script: """chmod a+x \${WORKSPACE}/sampleFailFast.sh && \
-                            \${WORKSPACE}/sampleFailFast.sh ${params.values}
+                            \${WORKSPACE}/sampleFailFast.sh ${params.values.split(" ")}
                          """
         env.globalReturnCode="${returnCode}"
         echo "RETURNCODE: ${returnCode} "
