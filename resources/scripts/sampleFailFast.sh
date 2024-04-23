@@ -5,7 +5,7 @@ set -u # Affects variables. When set, a reference to any variable you haven't pr
 set -x # Enables a mode of the shell where all executed commands are printed to the terminal.
 echo "SCRIPT PARAMETERS: $@"
 RESULT_JSON=mytest.json
-#echo $NonExistingVarCauseError
+echo $NonExistingVarCauseError
 greetings="World"
 echo "{"hello": "$greetings"}" > ${WORKSPACE}/${RESULT_JSON}
 exit 0
