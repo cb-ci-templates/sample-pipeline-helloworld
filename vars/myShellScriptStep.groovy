@@ -9,22 +9,24 @@ def call(Map params){
                             \${WORKSPACE}/sampleFailFast.sh
                          """
         env.globalReturnCode="${returnCode}"
-        if ( this.returnCode != "0" ){
-            sh "exit ${this.returnCode}"
+        if ( returnCode != "0" ){
+            sh "exit ${returnCode}"
         }
         env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat \${WORKSPACE}/mytest.json"
     }
     sh "echo ${env.MYJSON}"
-    if ( this.returnCode != "0" ){
-        sh "exit ${this.returnCode}"
+    if ( returnCode != "0" ){
+        sh "exit ${returnCode}"
     }
 }
-
+/*
 def exitOrContinue(returnCode ){
     echo "call exitOrContinue  returnCode:${this.returnCode}"
     if ( this.returnCode != "0" ){
         sh "exit ${this.returnCode}"
     }
 }
+*/
+
 
 
