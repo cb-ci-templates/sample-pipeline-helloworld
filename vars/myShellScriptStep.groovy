@@ -5,7 +5,7 @@ def call(Map params){
         //We should better externalize the script. For demo purpose we make the script here inline:
         env.globalReturnCode=sh label: 'exitStatus',
                 returnStatus: true,
-                script: """chmod a+x ${WORKSPACE}/nsv.sh && \
+                script: """chmod a+x ${WORKSPACE}/sampleFailFast.sh && \
                             ${WORKSPACE}/sampleFailFast.sh
                          """
         exitOrContinue ()
