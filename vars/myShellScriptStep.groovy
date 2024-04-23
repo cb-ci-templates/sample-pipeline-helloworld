@@ -17,6 +17,7 @@ def call(Map params){
 }
 
 def exitOrContinue(){
+    echo "call exitOrContinue  globalReturnCode:${env.globalReturnCode}"
     if ( "${env.globalReturnCode}" != "0" ){
         sh "exit ${env.globalReturnCode}"
     }
