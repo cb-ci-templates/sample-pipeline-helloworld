@@ -1,7 +1,7 @@
 
 def call(Map params){
     def returnCode= 0
-    catchError(catchInterruptions: false,message: "Pipeline Stage failed with returnCode ${returnCode}", buildResult:'FAILURE', stageResult: 'FAILURE') {
+    catchError(catchInterruptions: false,message: "Pipeline Stage failed", buildResult:'FAILURE', stageResult: 'FAILURE') {
         writeFile encoding: 'utf-8', file: "${WORKSPACE}/sampleFailFast.sh", text: libraryResource ('scripts/sampleFailFast.sh')
         returnCode=sh label: 'exitStatus',
                 returnStatus: true,
