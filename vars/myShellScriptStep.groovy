@@ -8,12 +8,18 @@ def call(Map params){
                 script: """chmod a+x \${WORKSPACE}/sampleFailFast.sh && \
                             \${WORKSPACE}/sampleFailFast.sh
                          """
-        //exitOrContinue ()
+        this.exitOrContinue()
         env.MYJSON=sh label: 'stdOut', returnStdout: true, script: "cat \${WORKSPACE}/mytest.json"
 
     }
     sh "echo ${env.MYJSON}"
-    //exitOrContinue ()
+    this.exitOrContinue()
+}
+
+def exitOrContinue(){
+    if ( env.globalReturnCode != "0"){
+        sh "exit ${env.globalReturnCode}"
+    }
 }
 
 

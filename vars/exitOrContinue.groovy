@@ -1,5 +1,5 @@
 def call(){
-    if ( "${env.globalReturnCode}" != "0" ){
-        sh "exit ${env.globalReturnCode}"
+    if ( ${env.globalReturnCode} != "0" ){
+        sh "exit \${env.globalReturnCode}"
     }
 }
