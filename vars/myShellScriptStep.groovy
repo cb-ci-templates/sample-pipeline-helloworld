@@ -9,7 +9,7 @@ def call(Map params){
                             \${WORKSPACE}/sampleFailFast.sh
                          """
         env.globalReturnCode="${returnCode}"
-        if ( returnCode != "0" ){
+        if ( !returnCode.equals("0") ){
             echo "EXIT 1"
             sh "exit 1"
         }else {
